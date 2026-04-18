@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Guidebook Banner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #1a1a1a;
+  }
+
+  .banner {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+    background: #f5f0e8;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── Parchment texture layer ── */
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(201,100,66,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 75%, rgba(74,124,138,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(107,124,94,0.04) 0%, transparent 60%);
+    z-index: 1;
+  }
+
+  /* ── Grain overlay ── */
+  .banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.3;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  /* ── LEFT PANEL ── */
+  .left {
+    padding: 80px 60px 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .left::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(74,124,138,0.3), transparent);
+  }
+
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #4a7c8a;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1.5px;
+    background: #4a7c8a;
+  }
+
+  .title-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: #2c2c2c;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .title-en .accent {
+    color: #c96442;
+    font-style: italic;
+  }
+
+  .title-cn {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #6b6258;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+
+  .desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #5a5a5a;
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+
+  .desc strong {
+    color: #2c2c2c;
+    font-weight: 600;
+  }
+
+  /* ── Tags ── */
+  .tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .tag--terracotta { color: #c96442; border-color: rgba(201,100,66,0.3); background: rgba(201,100,66,0.06); }
+  .tag--teal { color: #4a7c8a; border-color: rgba(74,124,138,0.3); background: rgba(74,124,138,0.06); }
+  .tag--olive { color: #6b7c5e; border-color: rgba(107,124,94,0.3); background: rgba(107,124,94,0.06); }
+  .tag--stone { color: #8a7e6b; border-color: rgba(138,126,107,0.3); background: rgba(138,126,107,0.06); }
+
+  /* ── RIGHT PANEL ── */
+  .right {
+    padding: 60px 80px 60px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
+
+  /* ── Pipeline visualization ── */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 14px 0;
+    position: relative;
+  }
+
+  .stage-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .stage:not(:last-child) .stage-num::after {
+    content: '';
+    position: absolute;
+    top: 46px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5px;
+    height: 26px;
+    background: linear-gradient(to bottom, currentColor, transparent);
+    opacity: 0.3;
+  }
+
+  .stage-num--terracotta { background: #c96442; }
+  .stage-num--terracotta::after { color: #c96442; }
+  .stage-num--teal { background: #4a7c8a; }
+  .stage-num--teal::after { color: #4a7c8a; }
+  .stage-num--olive { background: #6b7c5e; }
+  .stage-num--olive::after { color: #6b7c5e; }
+  .stage-num--stone { background: #8a7e6b; }
+  .stage-num--stone::after { color: #8a7e6b; }
+  .stage-num--dark { background: #3d3d3d; }
+  .stage-num--dark::after { color: #3d3d3d; }
+  .stage-num--deep { background: #5b4a3f; }
+
+  .stage-body {
+    padding-top: 2px;
+  }
+
+  .stage-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .stage-title .badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: rgba(74,124,138,0.1);
+    color: #4a7c8a;
+    letter-spacing: 0.5px;
+  }
+
+  .stage-desc {
+    font-size: 13px;
+    color: #7a7a7a;
+    line-height: 1.5;
+  }
+
+  /* ── Parallel branch indicator ── */
+  .parallel-branch {
+    margin: 2px 0 2px 22px;
+    padding: 10px 16px;
+    border-left: 2px solid rgba(74,124,138,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .parallel-branch .branch-item {
+    font-size: 12px;
+    color: #6b6b6b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .branch-item::before {
+    content: '→';
+    color: #4a7c8a;
+    font-size: 11px;
+  }
+
+  /* ── Bottom bar ── */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(44,44,44,0.94);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px;
+    z-index: 4;
+  }
+
+  .bottom-bar .tech {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .bottom-bar .tech span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .bottom-bar .tech span strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
+  .bottom-bar .license {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 1px;
+  }
+
+  /* ── Decorative elements ── */
+  .corner-deco {
+    position: absolute;
+    z-index: 3;
+  }
+
+  .corner-deco--tl {
+    top: 28px;
+    left: 28px;
+    width: 60px;
+    height: 60px;
+    border-top: 2px solid rgba(201,100,66,0.25);
+    border-left: 2px solid rgba(201,100,66,0.25);
+  }
+
+  .corner-deco--tr {
+    top: 28px;
+    right: 28px;
+    width: 60px;
+    height: 60px;
+    border-top: 2px solid rgba(74,124,138,0.2);
+    border-right: 2px solid rgba(74,124,138,0.2);
+  }
+
+  .corner-deco--bl {
+    bottom: 80px;
+    left: 28px;
+    width: 60px;
+    height: 60px;
+    border-bottom: 2px solid rgba(107,124,94,0.2);
+    border-left: 2px solid rgba(107,124,94,0.2);
+  }
+
+  .corner-deco--br {
+    bottom: 80px;
+    right: 28px;
+    width: 60px;
+    height: 60px;
+    border-bottom: 2px solid rgba(138,126,107,0.2);
+    border-right: 2px solid rgba(138,126,107,0.2);
+  }
+
+  /* ── Compass SVG ── */
+  .compass {
+    position: absolute;
+    top: 60px;
+    right: 80px;
+    z-index: 3;
+    opacity: 0.1;
+  }
+
+  /* ── Map grid decoration ── */
+  .map-grid {
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    width: 420px;
+    height: 420px;
+    z-index: 1;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(44,44,44,1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44,44,44,1) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  /* ── Output showcase ── */
+  .output-showcase {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: rgba(44,44,44,0.04);
+    border-radius: 4px;
+    border: 1px solid rgba(44,44,44,0.08);
+  }
+
+  .output-showcase .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 10px;
+  }
+
+  .output-showcase .files {
+    display: flex;
+    gap: 16px;
+  }
+
+  .output-showcase .file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .file-icon {
+    width: 32px;
+    height: 40px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+
+  .file-icon--pdf { background: #c96442; }
+  .file-icon--html { background: #4a7c8a; }
+
+  .file-meta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .file-meta .name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c2c2c;
+  }
+
+  .file-meta .size {
+    font-size: 11px;
+    color: #999;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <!-- Decorative corners -->
+  <div class="corner-deco corner-deco--tl"></div>
+  <div class="corner-deco corner-deco--tr"></div>
+  <div class="corner-deco corner-deco--bl"></div>
+  <div class="corner-deco corner-deco--br"></div>
+
+  <!-- Map grid background -->
+  <div class="map-grid"></div>
+
+  <!-- Compass decoration -->
+  <svg class="compass" width="120" height="120" viewBox="0 0 120 120" fill="none">
+    <circle cx="60" cy="60" r="55" stroke="#2c2c2c" stroke-width="1"/>
+    <circle cx="60" cy="60" r="40" stroke="#2c2c2c" stroke-width="0.5"/>
+    <line x1="60" y1="2" x2="60" y2="118" stroke="#2c2c2c" stroke-width="0.5"/>
+    <line x1="2" y1="60" x2="118" y2="60" stroke="#2c2c2c" stroke-width="0.5"/>
+    <polygon points="60,8 56,28 64,28" fill="#c96442"/>
+    <polygon points="60,112 56,92 64,92" fill="#2c2c2c"/>
+    <text x="60" y="7" text-anchor="middle" font-family="Playfair Display" font-size="9" fill="#2c2c2c">N</text>
+    <text x="60" y="119" text-anchor="middle" font-family="Playfair Display" font-size="9" fill="#2c2c2c">S</text>
+    <text x="3" y="63" text-anchor="middle" font-family="Playfair Display" font-size="9" fill="#2c2c2c">W</text>
+    <text x="117" y="63" text-anchor="middle" font-family="Playfair Display" font-size="9" fill="#2c2c2c">E</text>
+  </svg>
+
+  <div class="content">
+    <!-- LEFT: Branding -->
+    <div class="left">
+      <div class="eyebrow">AI Agent Skill</div>
+
+      <div class="title-en">
+        Travel<br><span class="accent">Guidebook</span>
+      </div>
+
+      <div class="title-cn">从调研到成书的一站式旅行路书引擎</div>
+
+      <p class="desc">
+        输入一句话行程需求，输出一本有<strong>文学温度</strong>的旅行指南。
+        羊皮纸底色、衬线体标题、内联 SVG 装饰、功能色信息系统——
+        <strong>排版即设计，零 AI 插图</strong>。
+      </p>
+
+      <div class="tags">
+        <span class="tag tag--terracotta">Playwright PDF</span>
+        <span class="tag tag--teal">Amap MCP</span>
+        <span class="tag tag--olive">Parallel Agents</span>
+        <span class="tag tag--stone">Pure Typography</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: Pipeline -->
+    <div class="right">
+      <div class="pipeline">
+        <div class="stage">
+          <div class="stage-num stage-num--stone">0</div>
+          <div class="stage-body">
+            <div class="stage-title">环境检测</div>
+            <div class="stage-desc">自动检查 Node.js + Playwright + Chromium</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-num stage-num--dark">1</div>
+          <div class="stage-body">
+            <div class="stage-title">需求确认</div>
+            <div class="stage-desc">解析行程意图，确定目的地与时间</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-num stage-num--teal">2</div>
+          <div class="stage-body">
+            <div class="stage-title">深度调研 <span class="badge">PARALLEL</span></div>
+            <div class="stage-desc">多 Agent 并行调研 + 高德实时 POI 数据</div>
+          </div>
+        </div>
+
+        <div class="parallel-branch">
+          <span class="branch-item">景点与文化调研</span>
+          <span class="branch-item">美食与住宿调研</span>
+          <span class="branch-item">交通与实用信息</span>
+          <span class="branch-item">Amap POI · 路线 · 周边</span>
+        </div>
+
+        <div class="stage">
+          <div class="stage-num stage-num--olive">3</div>
+          <div class="stage-body">
+            <div class="stage-title">路线架构</div>
+            <div class="stage-desc">每日行程编排，时间线与动线规划</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-num stage-num--terracotta">4</div>
+          <div class="stage-body">
+            <div class="stage-title">内容写作 <span class="badge">DEDICATED AGENT</span></div>
+            <div class="stage-desc">专职 Agent 编写完整 HTML 路书</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-num stage-num--deep">5</div>
+          <div class="stage-body">
+            <div class="stage-title">PDF 导出</div>
+            <div class="stage-desc">Playwright 渲染，A4 精排输出</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div class="output-showcase">
+        <div class="label">Output</div>
+        <div class="files">
+          <div class="file">
+            <div class="file-icon file-icon--html">HTML</div>
+            <div class="file-meta">
+              <span class="name">guidebook.html</span>
+              <span class="size">~80 KB · 可浏览器预览</span>
+            </div>
+          </div>
+          <div class="file">
+            <div class="file-icon file-icon--pdf">PDF</div>
+            <div class="file-meta">
+              <span class="name">guidebook.pdf</span>
+              <span class="size">~7 MB · 30+ 页精排路书</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="tech">
+      <span><strong>Node.js</strong> ≥18</span>
+      <span><strong>Playwright</strong> PDF</span>
+      <span><strong>Amap MCP</strong> Optional</span>
+      <span><strong>Copilot CLI</strong> / Claude Code</span>
+    </div>
+    <div class="license">MIT LICENSE · GEEKJOURNEY</div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,18 +1,6 @@
 <div align="center">
 
-```
-  ╔══════════════════════════════════════════╗
-  ║                                          ║
-  ║    ◇  Travel Guidebook Maker  ◇         ║
-  ║                                          ║
-  ║    从调研到成书的一站式旅游路书引擎        ║
-  ║                                          ║
-  ╚══════════════════════════════════════════╝
-```
-
-**零 AI 插图 · 零 Emoji · 纯排版驱动设计**
-
-Monocle 的编辑品味 × DK 的视觉叙事 × Lonely Planet 的信息深度 × Claude 的温暖美学
+<img src="assets/banner.png" alt="Travel Guidebook — 从调研到成书的一站式旅行路书引擎" width="100%">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-c96442.svg)](./LICENSE)
 [![Skill](https://img.shields.io/badge/Agent_Skill-Copilot_CLI-4a7c8a.svg)](#安装)
