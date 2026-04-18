@@ -239,6 +239,17 @@ travel-guidebook/
 
 ---
 
+## 关于作者
+
+| | |
+|:---|:---|
+| :globe_with_meridians: 个人主页 | [geekjourney.dev](https://geekjourney.dev) |
+| :octocat: GitHub | [geekjourneyx](https://github.com/geekjourneyx) |
+| :bird: Twitter | [@seekjourney](https://x.com/seekjourney) |
+| :speech_balloon: 公众号 | 微信搜「极客杰尼」 |
+
+---
+
 ## 许可证
 
 [MIT](./LICENSE) — 自由使用、修改、分发。
@@ -247,8 +258,6 @@ travel-guidebook/
 
 <div align="center">
 
-```
-  ◇ ─── 旅行不是为了到达，而是为了在路上。 ─── ◇
-```
+*旅行不是为了到达，而是为了在路上。*
 
 </div>
