@@ -1,6 +1,10 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="Travel Guidebook — 从调研到成书的一站式旅行路书引擎" width="100%">
+# Travel Guidebook
+
+**从调研到成书的一站式旅行路书引擎**
+
+<img src="assets/banner.png" alt="Travel Guidebook — AI Agent Skill for generating beautifully typeset travel guidebook PDFs" width="100%">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-c96442.svg)](./LICENSE)
 [![Skill](https://img.shields.io/badge/Agent_Skill-Copilot_CLI-4a7c8a.svg)](#安装)
