@@ -56,7 +56,7 @@ npx playwright install chromium
 ### 安装 Skill
 
 ```bash
-npx skills add travel-guidebook
+npx skills add https://github.com/geekjourneyx/travel-guidebook
 ```
 
 ### 高德地图 MCP（可选，推荐）
