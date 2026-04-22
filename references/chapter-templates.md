@@ -3,6 +3,8 @@
 > 本文件是 Stage 4 的参照资源。写作路书时，按照以下五部分结构和 HTML 模板生成内容。
 > 所有 SVG 装饰元素均内联在 HTML 中，不使用任何外部图片。
 
+> **重要：零外部依赖，速度优先。** 模板中出现的 `<i class="ti ti-xxx">` 是旧写法，**实际写作时必须替换为 CSS 彩色圆点**。参考 layout-css.md 的"图标与装饰系统"章节。装饰性 SVG（指南针、DAY 徽章、分隔线）保留；功能性图标一律用 `.dot` CSS 圆点。禁止 `<link rel="stylesheet">`、`<i class="ti ti-`、body 背景渐变。所有内容块必须带 `page-break-inside: avoid` 防止 PDF 截断。
+
 ## 目录
 
 - [第一部分：出发前（Before You Go）](#第一部分出发前before-you-go)

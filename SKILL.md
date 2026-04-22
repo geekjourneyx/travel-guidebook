@@ -1,11 +1,11 @@
 ---
 name: travel-guidebook
-description: Create beautifully designed travel guidebook PDFs from trip itineraries. End-to-end workflow from deep research to Playwright PDF export, featuring zero AI-generated images, Tabler Icons, inline SVG decorations, and Claude's warm parchment aesthetic. Use this skill whenever the user mentions 路书, 旅行指南, travel guidebook, 行程手册, trip planner, 自驾游攻略, itinerary book, 攻略, 出行指南, 旅行计划, 行程规划, or wants to turn trip notes into a printable guide. Also triggers for multi-day travel planning, route guides, road trip planners, 旅行攻略制作, 旅行PDF, or converting travel research into a professionally designed document.
+description: Create beautifully designed travel guidebook PDFs from trip itineraries. End-to-end workflow from deep research to Playwright PDF export, featuring zero AI-generated images, zero external CDN dependencies, inline SVG icons and decorations, and Claude's warm parchment aesthetic. Use this skill whenever the user mentions 路书, 旅行指南, travel guidebook, 行程手册, trip planner, 自驾游攻略, itinerary book, 攻略, 出行指南, 旅行计划, 行程规划, or wants to turn trip notes into a printable guide. Also triggers for multi-day travel planning, route guides, road trip planners, 旅行攻略制作, 旅行PDF, or converting travel research into a professionally designed document.
 ---
 
 # Travel Guidebook Maker
 
-从调研到成书的一站式旅游路书生成引擎——**零 AI 插图、零 emoji、纯 CDN 引入**。通过 Tabler Icons + 内联 SVG 装饰 + Claude 设计美学，打造有温度、有设计感的旅行指南 PDF。
+从调研到成书的一站式旅游路书生成引擎——**零 AI 插图、零 emoji、零外部依赖**。通过内联 SVG 图标和装饰 + Claude 设计美学，打造有温度、有设计感的旅行指南 PDF。所有资源内嵌，PDF 秒开。
 
 ## 设计哲学
 
@@ -454,7 +454,11 @@ Day X: [起点] → [终点]
 2. ¥ 用 &#165; 替代，— 用 &#8212;，→ 用 &#8594;，° 用 &#176;
 3. 每批写完后 wc -c 确认文件增长
 4. 总批次 3-5 批，按逻辑段落分割
-5. 所有 CSS 内嵌 <style>，所有 SVG 内联，零外部图片
+5. 所有 CSS 内嵌 <style>，零外部图片，零外部 CDN（无 Google Fonts、无图标字体）
+6. 装饰性 SVG（指南针、DAY 徽章、分隔线）保留；功能性图标用 CSS 彩色圆点（`.dot`）
+7. body 背景使用纯色（`var(--parchment)`），禁止 CSS 渐变纹理
+8. 所有内容块必须带 `page-break-inside: avoid` 防止 PDF 截断
+9. 字体使用系统字体栈，不加载 Google Fonts
 6. 最后一批必须包含 </body></html> 闭合标签
 ```
 
@@ -483,7 +487,7 @@ Agent 完成后：
 
 路书视觉设计继承 Claude 暖色调美学。阅读 `references/layout-css.md` 获取完整 CSS 规范，涵盖：
 
-- 外部资源（仅 Google Fonts + Tabler Icons CDN）
+- 外部资源：无（零 CDN 依赖，所有资源内联）
 - 页面布局（A4, max-width 680px）
 - 字体系统（Noto Serif SC / Noto Sans SC / JetBrains Mono）
 - 配色方案（Parchment 羊皮纸底 + Terracotta 赤陶色 + 功能色系统）
@@ -644,7 +648,7 @@ node html2pdf.mjs {文件名}_guidebook.html
 | 下边距 | 2.5cm | 为页码留空间 |
 | 左右边距 | 1.8cm | |
 | 页脚 | 居中页码 | 9pt JetBrains Mono |
-| 等待策略 | networkidle + 2s | 确保 CDN 资源加载 |
+| 等待策略 | networkidle + 1s | 确保内联资源渲染 |
 | 背景 | printBackground: true | 保留羊皮纸暖色纹理 |
 
 ## 备用方案
