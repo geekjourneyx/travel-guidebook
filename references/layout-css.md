@@ -17,14 +17,17 @@
 
 ---
 
-## 外部资源引入（仅 3 行）
+## 零外部依赖（重要）
+
+**不引入任何 CDN 资源。** 所有字体、图标、装饰均内联，确保 PDF 秒开。
+
+- 字体：使用系统字体栈，不加载 Google Fonts
+- 图标：使用内联 SVG 图标函数，不加载图标字体 CDN
+- 装饰：所有 SVG 内联在 HTML 中
+- HTML `<head>` 中不出现任何 `<link>` 标签
 
 ```html
-<!-- 1. 字体 --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap">
-  
-  <!-- 2. 图标 --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
-  
-  <!-- 3. 其余全部内联 —— 所有 SVG 装饰、CSS 样式、背景纹理都在 <style> 标签内 -->
+<!-- head 中只有 meta + title + <style>，零外部链接 -->
 ```
 
 ---
@@ -50,9 +53,9 @@ body {
 
 ```css
 :root {
-  --font-serif: 'Noto Serif SC', 'Source Han Serif SC', serif;
-  --font-sans: 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  --font-serif: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif CJK SC', serif;
+  --font-sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+  --font-mono: 'SF Mono', 'Menlo', 'Consolas', 'Courier New', monospace;
 }
 
 /* 标题用衬线体，正文用无衬线，功能信息用等宽 */
@@ -477,3 +480,112 @@ p {
   }
 }
 ```
+
+---
+
+## 图标与装饰系统（速度 &#43; 美观平衡）
+
+**禁止使用 `<i class="ti ti-xxx">` 和图标字体 CDN。禁止加载 Google Fonts。** 零外部依赖，PDF 秒开。
+
+### 设计原则：装饰用 SVG，功能用 CSS
+
+| 类型 | 方案 | 示例 |
+|------|------|------|
+| 装饰性元素（每页仅1-2个） | 保留内联 SVG | 指南针、DAY 徽章、分隔线 |
+| 功能性图标（页面内大量重复） | CSS 彩色圆点 | 地点标记、贴士标记、列表项 |
+
+这样做的理由：一个指南针 SVG 不会影响速度，但 40 个复杂路径图标会让每页渲染慢 5 秒。用 CSS 圆点替代功能性图标，渲染量从几百个 SVG 路径降到几十个圆形。
+
+### 装饰性 SVG（保留）
+
+封面指南针、DAY 编号徽章、分隔线等装饰性 SVG 沿用原有设计。每个页面仅出现 1-2 次，不影响性能。
+
+```
+指南针：封面使用，仅 1 个
+DAY 徽章：每天 1 个，共 N 个
+分隔线：flourish/diamond/dots 三种，按需使用
+```
+
+### 功能性图标：CSS 彩色圆点系统
+
+用 CSS 圆点替代所有功能性图标（列表项、meta 标签、贴士标记等）：
+
+```css
+/* 圆点图标系统 */
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; vertical-align: middle; margin-right: 6px; flex-shrink: 0; }
+.dot-r { background: var(--terracotta); }  /* 品牌色圆点：亮点、必停 */
+.dot-b { background: var(--route-blue); }  /* 路线色圆点：交通、位置 */
+.dot-a { background: var(--food-amber); }  /* 美食色圆点 */
+.dot-g { background: var(--stay-olive); }  /* 住宿色圆点 */
+.dot-w { background: var(--alert-rust); }  /* 警告色圆点：贴士 */
+```
+
+HTML 用法：
+```html
+<!-- 列表项 -->
+<li><span class="dot dot-r"></span>亮点文字</li>
+<li><span class="dot dot-w"></span>贴士内容</li>
+
+<!-- 信息标签 -->
+<span class="info-tag"><span class="dot dot-b"></span>建议 2h</span>
+<span class="info-tag"><span class="dot dot-a"></span>人均 ¥80</span>
+```
+
+### 徽章标签
+
+必停/可选等标签用纯 CSS 实现：
+```css
+.badge { display: inline-block; background: var(--terracotta); color: var(--ivory);
+  font-family: var(--font-mono); font-size: 12px; padding: 2px 10px;
+  border-radius: 3px; letter-spacing: 1px; margin-bottom: 8px; }
+.badge-alt { background: var(--route-blue); }
+```
+
+### DAY 编号（简化版）
+
+保留装饰感但减少 SVG 复杂度：
+```css
+.day-label { text-align: center; margin: 1rem 0 1.5rem; }
+.day-label span { display: inline-block; border: 2px solid var(--terracotta);
+  border-radius: 12px; padding: 6px 24px; }
+```
+```html
+<div class="day-label"><span>DAY <b style="font-size:28px;color:var(--terracotta)">01</b></span></div>
+```
+
+### 分隔线（保留 SVG）
+
+三种分隔线（flourish/diamond/dots）保留 SVG 内联，每个页面仅 1-2 个，不影响性能。
+
+## 背景处理
+
+**禁止使用 CSS 渐变纹理模拟纸张。** 使用纯色背景：
+
+```css
+body { background-color: var(--parchment); /* 不加 background-image 渐变 */ }
+```
+
+渐变纹理会让 PDF 阅读器在每页重新渲染背景区域，是 PDF 变慢的重要原因之一。
+
+## 分页规则（防截断）
+
+在原有分页规则基础上，**强制所有块级元素不可拆分**：
+
+```css
+/* 核心规则：所有内容块不可被页面截断 */
+.stop-card, .food-card, .stay-card, .tips-box, .journal-space,
+.route-description, .timeline-box, .prep-section, .deep-dive-section,
+.appendix-section, .overview-highlights { page-break-inside: avoid; break-inside: avoid; }
+
+/* 标题紧跟内容 */
+h2, h3, h4 { page-break-after: avoid; break-after: avoid; }
+
+/* 每天、深度游、附录从新页开始 */
+.day-chapter, .deep-dive, .appendix { page-break-before: always; break-before: page; }
+```
+
+> **写作要求**：
+> - HTML 中禁止出现 `<link rel="stylesheet" href="...">` 和 `<i class="ti ti-`
+> - 禁止在 body 上使用 background-image 渐变
+> - 所有内容块必须带 `page-break-inside: avoid`
+> - 功能性图标使用 CSS 圆点，仅装饰元素使用内联 SVG
